@@ -11,23 +11,31 @@
  */
 class Solution {
 public:
-    int paLength = 0;
-    void dfs(TreeNode* node, bool goLeft, int steps){
-        if(node == nullptr){
-                return;
-            }
-            paLength = max(paLength, steps);
-            if(goLeft){
-                dfs(node -> left, false, steps+1);
-                dfs(node -> right,true, 1);
-            } else {
-                dfs(node -> left,false,1);
-                dfs(node -> right, true, steps + 1);
-        }
+void dfs(TreeNode *node, bool go_left, int curr_steps, int &ans)
+{
+    if (node == nullptr)
+        return;
+
+    ans = max(ans, curr_steps);
+
+    if (go_left)
+    {
+        dfs(node->left, false, curr_steps + 1, ans);
+        dfs(node->right, true, 1, ans);
     }
-    int longestZigZag(TreeNode* root) {
-        dfs(root,false, 0);
-        dfs(root, true,0);
-        return paLength;
+    else
+    {
+        dfs(node->left, false, 1, ans);
+        dfs(node->right, true, curr_steps + 1, ans);
     }
+}
+
+int longestZigZag(TreeNode *root)
+{
+    int ans = 0;
+    int curr_steps = 0;
+    dfs(root, false, curr_steps, ans);
+    dfs(root, true, curr_steps, ans);
+    return ans;
+}
 };
