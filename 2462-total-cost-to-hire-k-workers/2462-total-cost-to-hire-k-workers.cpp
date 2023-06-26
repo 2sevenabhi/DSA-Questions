@@ -1,28 +1,60 @@
 class Solution {
 public:
-    long long totalCost(vector<int>& costs, int k, int c) {
-        priority_queue<int,vector<int>,greater<int>> left,right;
-        long long ans=0;
-        int n=costs.size()-1,i=0,ctr=0;
-        while(ctr<k)
-        {
-            while(left.size()<c&&i<=n)
-            left.push(costs[i++]);
-            while(right.size()<c&&n>=i)
-            right.push(costs[n--]);
-            int l=left.size()>0?left.top():INT_MAX;
-            int r=right.size()>0?right.top():INT_MAX;
-            if(l>r)
-            {
-                ans+=r;
-                right.pop();
+    long long totalCost(vector<int>& costs, int k, int candidates) {
+        int n = costs.size();
+        long long ans = 0;
+        int left = 0;
+        int right = n-1;
+        priority_queue <int, vector<int>, greater<int> > pqLeft; 
+        priority_queue <int, vector<int>, greater<int> > pqRight; 
+
+        while(left < right && candidates > 0){
+            pqLeft.push(costs[left]);
+            pqRight.push(costs[right]);
+            left++;
+            right--;
+            candidates--;
+        }
+
+        
+        if(candidates > 0 && left == right){
+            pqLeft.push(costs[left]);
+            left++;
+        }
+
+        
+        while(left <= right && k > 0){
+            if(pqLeft.top() <= pqRight.top()){
+                ans += pqLeft.top();
+                pqLeft.pop();
+                pqLeft.push(costs[left]);
+                left++;
+            }else{
+                ans += pqRight.top();
+                pqRight.pop();
+                pqRight.push(costs[right]);
+                right--;
             }
-            else
-            {
-                ans+=l;
-                left.pop();
+            k--;
+        }
+
+               while(k > 0){
+            if(!pqLeft.empty() && !pqRight.empty()){
+                if(pqRight.top() >= pqLeft.top()){
+                    ans += pqLeft.top();
+                    pqLeft.pop();
+                }else{
+                    ans += pqRight.top();
+                    pqRight.pop();
+                }
+            }else if(!pqLeft.empty()){
+                ans += pqLeft.top();
+                pqLeft.pop();
+            }else{
+                ans += pqRight.top();
+                pqRight.pop();
             }
-            ctr++;
+            k--;
         }
         return ans;
     }
