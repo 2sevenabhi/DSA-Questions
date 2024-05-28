@@ -1,7 +1,7 @@
 class Solution {
 public:
     int equalSubstring(string s, string t, int maxCost) {
-int cost=0;
+        int cost=0;
         int maxlength=0;
         int j=0;
         
@@ -15,4 +15,5 @@ int cost=0;
     }
         return maxlength;
     }
+    
 };
