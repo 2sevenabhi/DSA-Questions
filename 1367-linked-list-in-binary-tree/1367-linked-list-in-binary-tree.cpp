@@ -26,17 +26,17 @@ public:
     }
     
     bool dfs(ListNode* head, ListNode* cur, TreeNode* root) {
-        if (cur == nullptr) return true;  // Successfully matched the list
-        if (root == nullptr) return false; // Reached the end of the tree without matching
+        if (cur == nullptr) return true;  
+        if (root == nullptr) return false; 
         
         if (cur->val == root->val) {
-            cur = cur->next;  // Move to the next list node if value matches
+            cur = cur->next;  
         } else if (head->val == root->val) {
-            head = head->next; // Start new matching attempt if the value matches head of list
+            head = head->next; 
         } else {
-            cur = head;  // Reset the matching pointer
+            cur = head; 
         }
         
-        return dfs(head, cur, root->left) || dfs(head, cur, root->right); // Recursively check left and right subtrees
+        return dfs(head, cur, root->left) || dfs(head, cur, root->right); 
     }
 };
